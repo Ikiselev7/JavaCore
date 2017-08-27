@@ -8,10 +8,14 @@ import java.io.InputStreamReader;
 public class DoubleCalculator {
 
     public static void main(String[] args) {
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
         DoubleCalculator calculator = new DoubleCalculator();
+        calculator.consolStart();
+    }
 
-        ConsoleASCIIPrinter printer = new ConsoleASCIIPrinter();
+    public void consolStart(){
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+
+        StringPrinter stringPrinter = new ConsoleASCIIStringPrinter();
 
         System.out.println("Hello! I'm double calculator");
 
@@ -23,12 +27,12 @@ public class DoubleCalculator {
                 System.out.println("Please, enter operands (use space as delimeter)");
                 String operands = bufferedReader.readLine();
                 try {
-                    double result = calculator.calculate(operator,operands.split(" "));
-                    printer.print(Double.toString(result));
+                    double result = this.calculate(operator,operands.split(" "));
+                    stringPrinter.print(Double.toString(result));
                 } catch (CalculatorExeption calculatorExeption) {
                     System.out.println(calculatorExeption.getMessage());
                 } catch (NumberFormatException e){
-                    System.out.println(e.getMessage());
+                    System.out.println("Operand not correct"+ e.getMessage());
                 }
 
 
@@ -37,7 +41,6 @@ public class DoubleCalculator {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 
     }
 
@@ -56,7 +59,7 @@ public class DoubleCalculator {
         return parsedOperands;
     }
 
-    public double calculate(String operator, String... operands) throws CalculatorExeption {
+    private double calculate(String operator, String... operands) throws CalculatorExeption {
         double calculationResult = 0;
 
         this.check(operands);
@@ -66,23 +69,22 @@ public class DoubleCalculator {
 
         switch (operator){
             case "+":
-                calculationResult = doubleOperands[0]+doubleOperands[1];
+                calculationResult = new Addition(doubleOperands[0],doubleOperands[1]).calculate();
                 break;
             case "-":
-                calculationResult = doubleOperands[0]-doubleOperands[1];
+                calculationResult = new Subtraction(doubleOperands[0],doubleOperands[1]).calculate();
                 break;
             case "*":
-                calculationResult = doubleOperands[0]*doubleOperands[1];
+                calculationResult = new Multiplication(doubleOperands[0],doubleOperands[1]).calculate();
                 break;
             case"/":
-                if(doubleOperands[1]==0) System.out.println("Bad gay, your divorsed by zero, but I still have a result");
-                calculationResult = doubleOperands[0]/doubleOperands[1];
+                if(doubleOperands[1]==0) System.out.println("Bad gay, you divorsed by zero, but I still have a result");
+                calculationResult = new Division(doubleOperands[0],doubleOperands[1]).calculate();
                 break;
             default:
                 throw new CalculatorExeption("Illegal operation");
         }
 
-        //System.out.println(calculationResult);
 
         return calculationResult;
     }

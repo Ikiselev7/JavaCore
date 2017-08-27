@@ -4,7 +4,9 @@ import java.util.Map;
 /**
  * Created by ilya on 26.08.17.
  */
-public class ConsoleASCIIPrinter implements Printer {
+public class ConsoleASCIIStringPrinter implements StringPrinter {
+    private static final int LETTER_HEIGHT = 5;
+
     private static final Map<String, String> LETTERS = new HashMap<>();
     static {
         LETTERS.put("0",
@@ -79,52 +81,33 @@ public class ConsoleASCIIPrinter implements Printer {
                 "000"+
                 "0 0"+
                 "0 0");
-        LETTERS.put("a",
-                " 0 "+
-                        "0 0"+
-                        "000"+
-                        "0 0"+
-                        "0 0");
-
-        LETTERS.put("n",
-                "0   0"+
-                        "00  0"+
-                        "0 0 0"+
-                        "0  00"+
-                        "0   0");
         LETTERS.put("N",
              "0   0"+
                 "00  0"+
                 "0 0 0"+
                 "0  00"+
                 "0   0");
-        LETTERS.put("i",
-                "000"+
-                        " 0 "+
-                        " 0 "+
-                        " 0 "+
-                        "000");
         LETTERS.put("I",
              "000"+
                 " 0 "+
                 " 0 "+
                 " 0 "+
                 "000");
-        LETTERS.put("f",
+        LETTERS.put("F",
              "000"+
                 "0  "+
                 "00 "+
                 "0  "+
                 "0  ");
 
-        LETTERS.put("t",
+        LETTERS.put("T",
             "000"+
                " 0 "+
                " 0 "+
                " 0 "+
                " 0 ");
 
-        LETTERS.put("y",
+        LETTERS.put("Y",
              "0 0"+
                 "0 0"+
                 " 0 "+
@@ -154,15 +137,14 @@ public class ConsoleASCIIPrinter implements Printer {
         StringBuilder printableString = new StringBuilder();
 
 
-        for (int lineCounter = 0; lineCounter < 5; lineCounter++) {
+        for (int lineCounter = 0; lineCounter < LETTER_HEIGHT; lineCounter++) {
 
-            for (int i = 0; i < string.length(); i++) {
-                int symbolLength = LETTERS
-                        .get(string.substring(i,i+1)).length()/5;
-                printableString .append(LETTERS
-                                           .get(string.substring(i,i+1))
-                                           .substring(lineCounter*symbolLength,lineCounter*symbolLength+symbolLength))
-                                .append(" ");
+            for (int symbolCounter = 0; symbolCounter < string.length(); symbolCounter++) {
+                String symbol = string.substring(symbolCounter,symbolCounter+1).toUpperCase();
+                String letter = LETTERS.get(symbol);
+                int symbolLength = letter.length()/LETTER_HEIGHT;
+                printableString .append(letter.substring(lineCounter*symbolLength,lineCounter*symbolLength+symbolLength))
+                                .append("  ");
             }
             printableString.append("\n");
 
