@@ -11,6 +11,8 @@ public class DoubleCalculator {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
         DoubleCalculator calculator = new DoubleCalculator();
 
+        ConsoleASCIIPrinter printer = new ConsoleASCIIPrinter();
+
         System.out.println("Hello! I'm double calculator");
 
         try {
@@ -21,12 +23,15 @@ public class DoubleCalculator {
                 System.out.println("Please, enter operands (use space as delimeter)");
                 String operands = bufferedReader.readLine();
                 try {
-                    calculator.calculate(operator,operands.split(" "));
+                    double result = calculator.calculate(operator,operands.split(" "));
+                    printer.print(Double.toString(result));
                 } catch (CalculatorExeption calculatorExeption) {
                     System.out.println(calculatorExeption.getMessage());
                 } catch (NumberFormatException e){
                     System.out.println(e.getMessage());
                 }
+
+
 
             }
         } catch (IOException e) {
@@ -77,7 +82,7 @@ public class DoubleCalculator {
                 throw new CalculatorExeption("Illegal operation");
         }
 
-        System.out.println(calculationResult);
+        //System.out.println(calculationResult);
 
         return calculationResult;
     }
